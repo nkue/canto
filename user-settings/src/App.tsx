@@ -1,6 +1,7 @@
 import "./App.css";
 
 import { Button } from "./stories/Button";
+import AccordionDemo from "./stories/Accordion";
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
           disabled={false}
         />
       </div>
+      <AccordionDemo />
     </>
   );
 }
