@@ -1,9 +1,13 @@
 import "./App.css";
+import { useState } from "react";
 
 import { Button } from "./stories/Button";
 import AccordionDemo from "./stories/Accordion";
+import Dropdown from "./stories/Dropdown";
 
 function App() {
+  const [selectedOption, setSelectedOption] = useState("option1");
+
   return (
     <>
       <div className="card">
@@ -23,6 +27,16 @@ function App() {
         />
       </div>
       <AccordionDemo />
+      <Dropdown
+        options={[
+          { value: "option1", label: "Option 1" },
+          { value: "option2", label: "Option 2" },
+          { value: "option3", label: "Option 3" },
+        ]}
+        value={selectedOption}
+        onChange={setSelectedOption}
+        label="Select an Option"
+      />
     </>
   );
 }
