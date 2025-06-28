@@ -1,9 +1,9 @@
 import "./App.css";
 import { useState } from "react";
 
-import { Button } from "./stories/Button";
-import AccordionDemo from "./stories/Accordion";
-import Dropdown from "./stories/Dropdown";
+import { Button } from "./stories/button/Button";
+import AccordionDemo from "./stories/accordion/Accordion";
+import Dropdown from "./stories/dropdown/Dropdown";
 
 function App() {
   const [selectedOption, setSelectedOption] = useState("option1");
