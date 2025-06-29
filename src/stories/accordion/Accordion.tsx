@@ -1,78 +1,82 @@
 import * as React from "react";
-import { Accordion } from "radix-ui";
-import "./accordion.css";
+import * as RadixAccordion from "@radix-ui/react-accordion";
+import classes from "./Accordion.module.css";
 
-const AccordionDemo = () => (
-  <Accordion.Root
-    className="AccordionRoot"
-    type="single"
-    defaultValue="item-1"
-    collapsible
-  >
-    <Accordion.Item className="AccordionItem" value="item-1">
-      <AccordionTrigger>Is it accessible?</AccordionTrigger>
-      <AccordionContent className="AccordionContent">
-        <div className="AccordionContentText">
-          Yes! You can animate the Accordion with CSS or JavaScript.
-        </div>
-      </AccordionContent>
-    </Accordion.Item>
+export interface AccordionItem {
+	value: string;
+	trigger: React.ReactNode;
+	content: React.ReactNode;
+}
 
-    <Accordion.Item className="AccordionItem" value="item-2">
-      <AccordionTrigger>Is it unstyled?</AccordionTrigger>
-      <AccordionContent className="AccordionContent">
-        <div className="AccordionContentText">
-          Yes! You can animate the Accordion with CSS or JavaScript.
-        </div>
-      </AccordionContent>
-    </Accordion.Item>
+export interface AccordionProps {
+	items: AccordionItem[];
+	type?: "single" | "multiple";
+	defaultValue?: string | string[];
+	collapsible?: boolean;
+	disabled?: boolean;
+	className?: string;
+}
 
-    <Accordion.Item className="AccordionItem" value="item-3">
-      <AccordionTrigger>Can it be animated?</AccordionTrigger>
-      <Accordion.Content className="AccordionContent">
-        <div className="AccordionContentText">
-          Yes! You can animate the Accordion with CSS or JavaScript.
-        </div>
-      </Accordion.Content>
-    </Accordion.Item>
-  </Accordion.Root>
-);
+export const Accordion: React.FC<AccordionProps> = ({
+	items,
+	type = "single",
+	defaultValue,
+	collapsible = true,
+	disabled = false,
+	className = "",
+}) => {
+	const rootProps =
+		type === "single"
+			? {
+					type: "single" as const,
+					defaultValue:
+						typeof defaultValue === "string" ? defaultValue : undefined,
+					collapsible,
+			  }
+			: {
+					type: "multiple" as const,
+					defaultValue: Array.isArray(defaultValue) ? defaultValue : undefined,
+			  };
 
-const AccordionTrigger = React.forwardRef<
-  HTMLButtonElement,
-  React.ComponentPropsWithoutRef<typeof Accordion.Trigger>
->(({ children, ...props }, ref) => (
-  <Accordion.Header className="AccordionHeader">
-    <Accordion.Trigger ref={ref} {...props} className="AccordionTrigger">
-      {children}
-      <span className="AccordionChevron">
-        <svg
-          width="16"
-          height="16"
-          viewBox="0 0 16 16"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            d="M4 6L8 10L12 6"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          />
-        </svg>
-      </span>
-    </Accordion.Trigger>
-  </Accordion.Header>
-));
-
-const AccordionContent = React.forwardRef<
-  HTMLDivElement,
-  React.ComponentPropsWithoutRef<typeof Accordion.Content>
->(({ children, ...props }, ref) => (
-  <Accordion.Content ref={ref} {...props}>
-    {children}
-  </Accordion.Content>
-));
-
-export default AccordionDemo;
+	return (
+		<RadixAccordion.Root
+			{...rootProps}
+			className={[classes.root, className].join(" ")}
+			data-disabled={disabled}
+		>
+			{items.map((item) => (
+				<RadixAccordion.Item
+					key={item.value}
+					value={item.value}
+					className={classes.item}
+					data-disabled={disabled}
+				>
+					<RadixAccordion.Header className={classes.header}>
+						<RadixAccordion.Trigger
+							className={classes.trigger}
+							disabled={disabled}
+							aria-disabled={disabled}
+						>
+							{item.trigger}
+							<span className={classes.chevron} aria-hidden>
+								<svg width="16" height="16" viewBox="0 0 16 16">
+									<path
+										d="M4 6L8 10L12 6"
+										stroke="currentColor"
+										strokeWidth="2"
+										strokeLinecap="round"
+										strokeLinejoin="round"
+										fill="none"
+									/>
+								</svg>
+							</span>
+						</RadixAccordion.Trigger>
+					</RadixAccordion.Header>
+					<RadixAccordion.Content className={classes.content}>
+						{item.content}
+					</RadixAccordion.Content>
+				</RadixAccordion.Item>
+			))}
+		</RadixAccordion.Root>
+	);
+};

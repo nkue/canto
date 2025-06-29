@@ -1,32 +1,36 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
+import { Accordion } from "./Accordion";
 
-import { fn } from "storybook/test";
-
-import AccordionStory from "./Accordion";
-
-// More on how to set up stories at: https://storybook.js.org/docs/writing-stories#default-export
 const meta = {
-  title: "Example/Accordion",
-  component: AccordionStory,
-  parameters: {
-    // Optional parameter to center the component in the Canvas. More info: https://storybook.js.org/docs/configure/story-layout
-    layout: "centered",
-  },
-  // This component will have an automatically generated Autodocs entry: https://storybook.js.org/docs/writing-docs/autodocs
-  tags: ["autodocs"],
-  // More on argTypes: https://storybook.js.org/docs/api/argtypes
-  argTypes: {},
-  // Use `fn` to spy on the onClick arg, which will appear in the actions panel once invoked: https://storybook.js.org/docs/essentials/actions#action-args
-  args: { onClick: fn() },
-} satisfies Meta<typeof AccordionStory>;
+	title: "Components/Accordion",
+	component: Accordion,
+	parameters: {
+		layout: "centered",
+	},
+	tags: ["autodocs"],
+} satisfies Meta<typeof Accordion>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-// More on writing stories with args: https://storybook.js.org/docs/writing-stories/args
 export const Primary: Story = {
-  args: {
-    AccordionStyle: "primary",
-    label: "Accordion",
-  },
+	args: {
+		items: [
+			{
+				value: "item-1",
+				trigger: "Is it accessible?",
+				content: "Yes! You can animate the Accordion with CSS or JavaScript.",
+			},
+			{
+				value: "item-2",
+				trigger: "Is it unstyled?",
+				content: "Yes! You can animate the Accordion with CSS or JavaScript.",
+			},
+			{
+				value: "item-3",
+				trigger: "Can it be animated?",
+				content: "Yes! You can animate the Accordion with CSS or JavaScript.",
+			},
+		],
+	},
 };
